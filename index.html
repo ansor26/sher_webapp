@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Sher Kombat</title>
+  <title>🦁 Sher Kombat | Click to Earn!</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
@@ -24,6 +24,58 @@
       <button class="menu-btn">Exchange</button>
     </div>
   </div>
-  <script src="script.js"></script>
+  <script>
+    Telegram.WebApp.ready();
+    Telegram.WebApp.expand();
+
+    let balance = parseInt(localStorage.getItem("balance")) || 0;
+    let energy = parseInt(localStorage.getItem("energy")) || 10;
+    const profit = 10;
+
+    const balanceEl = document.getElementById("balance");
+    const energyEl = document.getElementById("energy");
+    const fightBtn = document.getElementById("fightBtn");
+
+    function updateUI() {
+      balanceEl.textContent = `${balance}`;
+      energyEl.textContent = `${energy}/10`;
+    }
+
+    fightBtn.addEventListener("mousedown", (e) => {
+      e.preventDefault();
+    });
+
+    fightBtn.addEventListener("click", () => {
+      if (energy > 0) {
+        balance += profit;
+        energy -= 1;
+
+        localStorage.setItem("balance", balance);
+        localStorage.setItem("energy", energy);
+
+        updateUI();
+
+        Telegram.WebApp.sendData(
+          JSON.stringify({
+            action: "fight",
+            balance,
+            energy
+          })
+        );
+      } else {
+        alert("⚡ Not enough energy!");
+      }
+    });
+
+    setInterval(() => {
+      if (energy < 10) {
+        energy += 1;
+        localStorage.setItem("energy", energy);
+        updateUI();
+      }
+    }, 5000);
+
+    updateUI();
+  </script>
 </body>
 </html>
