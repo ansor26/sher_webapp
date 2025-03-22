@@ -1,18 +1,15 @@
-// Переменные
 let balance = 0;
 let energy = 10;
 const profit = 10;
 
-// Telegram WebApp готов
-Telegram.WebApp.ready();
-Telegram.WebApp.expand(); // Автоматически разворачивает на весь экран
-
-// Получаем элементы
 const balanceEl = document.getElementById("balance");
 const energyEl = document.getElementById("energy");
 const fightBtn = document.getElementById("fightBtn");
 
-// Обработка кнопки Fight
+fightBtn.addEventListener("mousedown", (e) => {
+    e.preventDefault(); // убирает фокус, чтобы не прыгал экран
+});
+
 fightBtn.addEventListener("click", () => {
     console.log("Fight button clicked");
 
@@ -23,7 +20,6 @@ fightBtn.addEventListener("click", () => {
         balanceEl.textContent = `${balance}`;
         energyEl.textContent = `${energy}/10`;
 
-        // Отправить данные в Telegram WebApp (если понадобится)
         Telegram.WebApp.sendData(JSON.stringify({
             action: "fight",
             balance: balance,
@@ -34,7 +30,6 @@ fightBtn.addEventListener("click", () => {
     }
 });
 
-// Автоматическое восстановление энергии каждые 5 секунд
 setInterval(() => {
     if (energy < 10) {
         energy += 1;
