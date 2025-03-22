@@ -1,27 +1,39 @@
-// Переменные для баланса, энергии и дохода за клик
+// Гарантируем, что Telegram WebApp готов
+Telegram.WebApp.ready();
+
+// Раскрываем окно (полноэкранное)
+Telegram.WebApp.expand();
+
+// Получаем данные пользователя
+const user = Telegram.WebApp.initDataUnsafe.user;
+console.log("Привет,", user.first_name);
+
+// Переменные для логики
 let balance = 0;
 let energy = 10;
-let maxEnergy = 10;
-let profitPerTap = 10;
+const profit = 10;
 
-// Обработчик клика на кнопку "Fight!"
-document.getElementById("fightBtn").addEventListener("click", function() {
+const balanceEl = document.getElementById("balance");
+const energyEl = document.getElementById("energy");
+const fightBtn = document.getElementById("fightBtn");
+
+// Обработка нажатия "Fight"
+fightBtn.addEventListener("click", () => {
     if (energy > 0) {
-        balance += profitPerTap; // Увеличиваем баланс
-        energy--; // Уменьшаем энергию
+        balance += profit;
+        energy--;
 
-        // Обновляем текст на странице
-        document.getElementById("balance").textContent = "Balance: " + balance + " Sher Coins";
-        document.getElementById("energy").textContent = "Energy: " + energy + "/" + maxEnergy + " ⚡";
+        balanceEl.textContent = `${balance}`;
+        energyEl.textContent = `${energy}/10`;
+
+        // Отправка действия в Telegram (можно использовать на бэке)
+        Telegram.WebApp.sendData(JSON.stringify({
+            action: "fight",
+            user_id: user.id,
+            balance: balance,
+            energy: energy
+        }));
     } else {
-        alert("No energy left! Wait for recharge."); // Если энергия закончилась
+        alert("⚡ Not enough energy!");
     }
 });
-
-// 🔄 Автоматическое восстановление энергии (1 ⚡ каждую 5 секунд)
-setInterval(() => {
-    if (energy < maxEnergy) {
-        energy++;
-        document.getElementById("energy").textContent = "Energy: " + energy + "/" + maxEnergy + " ⚡";
-    }
-}, 5000);
