@@ -15,7 +15,22 @@ fightBtn.addEventListener("click", () => {
 
         balanceEl.textContent = `${balance}`;
         energyEl.textContent = `${energy}/10`;
+
+        // Отправка данных в Telegram WebApp (если нужно использовать)
+        Telegram.WebApp.sendData(JSON.stringify({
+            action: "fight",
+            balance: balance,
+            energy: energy
+        }));
     } else {
         alert("⚡ Not enough energy!");
     }
 });
+
+// Восстановление энергии каждые 5 секунд
+setInterval(() => {
+    if (energy < 10) {
+        energy += 1;
+        energyEl.textContent = `${energy}/10`;
+    }
+}, 5000);
