@@ -1,3 +1,7 @@
+// Разворачиваем Mini App на весь экран
+Telegram.WebApp.ready();
+Telegram.WebApp.expand();
+
 let balance = 0;
 let energy = 10;
 const profit = 10;
