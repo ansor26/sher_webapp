@@ -14,7 +14,10 @@
       <p>Profit per tap: <span id="profit">+10</span> 💰</p>
       <p>Balance: <span id="balance">0</span> Sher Coins</p>
       <p>Energy: <span id="energy">10/10</span> ⚡</p>
-      <p>Level: <span id="level">1</span></p>
+      <p>Level: <span id="level">1</span> | XP: <span id="xp">0</span>/<span id="xpToNext">100</span></p>
+      <div class="xp-bar">
+        <div id="xpProgress" class="xp-progress"></div>
+      </div>
     </div>
     <button id="fightBtn">⚔ Fight!</button>
     <div class="buttons">
@@ -30,15 +33,28 @@
 
     let balance = parseInt(localStorage.getItem("balance")) || 0;
     let energy = parseInt(localStorage.getItem("energy")) || 10;
+    let xp = parseInt(localStorage.getItem("xp")) || 0;
+    let level = parseInt(localStorage.getItem("level")) || 1;
+    let xpToNext = level * 100;
+
     const profit = 10;
+    const xpPerFight = 5;
 
     const balanceEl = document.getElementById("balance");
     const energyEl = document.getElementById("energy");
     const fightBtn = document.getElementById("fightBtn");
+    const levelEl = document.getElementById("level");
+    const xpEl = document.getElementById("xp");
+    const xpToNextEl = document.getElementById("xpToNext");
+    const xpProgress = document.getElementById("xpProgress");
 
     function updateUI() {
       balanceEl.textContent = `${balance}`;
       energyEl.textContent = `${energy}/10`;
+      levelEl.textContent = `${level}`;
+      xpEl.textContent = `${xp}`;
+      xpToNextEl.textContent = `${xpToNext}`;
+      xpProgress.style.width = `${(xp / xpToNext) * 100}%`;
     }
 
     fightBtn.addEventListener("mousedown", (e) => {
@@ -49,9 +65,18 @@
       if (energy > 0) {
         balance += profit;
         energy -= 1;
+        xp += xpPerFight;
+
+        if (xp >= xpToNext) {
+          xp = xp - xpToNext;
+          level++;
+          xpToNext = level * 100;
+        }
 
         localStorage.setItem("balance", balance);
         localStorage.setItem("energy", energy);
+        localStorage.setItem("xp", xp);
+        localStorage.setItem("level", level);
 
         updateUI();
 
@@ -59,7 +84,9 @@
           JSON.stringify({
             action: "fight",
             balance,
-            energy
+            energy,
+            xp,
+            level
           })
         );
       } else {
