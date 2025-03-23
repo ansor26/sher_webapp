@@ -1,88 +1,88 @@
-Telegram.WebApp.ready();
-Telegram.WebApp.expand();
+document.addEventListener('DOMContentLoaded', () => {
+    const hamster = document.getElementById('hamster');
+    const scoreElement = document.getElementById('score');
+    const energyElement = document.getElementById('energy');
+    const dailyRewardTimerElement = document.getElementById('daily-reward-timer');
+    const dailyCodeTimerElement = document.getElementById('daily-code-timer');
+    const comboTimerElement = document.getElementById('combo-timer');
 
-let balance = parseInt(localStorage.getItem("balance")) || 0;
-let energy = parseInt(localStorage.getItem("energy")) || 10;
-let xp = parseInt(localStorage.getItem("xp")) || 0;
-let level = parseInt(localStorage.getItem("level")) || 1;
-let xpToNext = level * 100;
-let lastEnergyUpdate = parseInt(localStorage.getItem("lastEnergyUpdate")) || Date.now();
+    // Получение сохраненного значения очков из Local Storage
+    let score = parseInt(localStorage.getItem('score')) || 194912344; // Установка начального значения очков
+    let currentEnergy = 3000;
+    const totalEnergy = 3000;
 
-const profit = 10;
-const xpPerFight = 5;
+    // Функция форматирования числа с пробелами
+    function formatNumber(num) {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    }
 
-const balanceEl = document.getElementById("balance");
-const energyEl = document.getElementById("energy");
-const fightBtn = document.getElementById("fightBtn");
-const levelEl = document.getElementById("level");
-const xpEl = document.getElementById("xp");
-const xpToNextEl = document.getElementById("xpToNext");
-const xpProgress = document.getElementById("xpProgress");
+    // Обновление отображения начального значения очков
+    scoreElement.textContent = formatNumber(score);
 
-// Восстанавливаем энергию по времени (после закрытия)
-const now = Date.now();
-const diffSec = Math.floor((now - lastEnergyUpdate) / 5000); // каждые 5 сек
-if (diffSec > 0 && energy < 10) {
-    energy = Math.min(energy + diffSec, 10);
-    localStorage.setItem("energy", energy);
-}
+    function updateEnergyDisplay() {
+        energyElement.textContent = `${currentEnergy}/${totalEnergy}`;
+    }
 
-// UI
-function updateUI() {
-    balanceEl.textContent = `${balance}`;
-    energyEl.textContent = `${energy}/10`;
-    levelEl.textContent = `${level}`;
-    xpEl.textContent = `${xp}`;
-    xpToNextEl.textContent = `${xpToNext}`;
-    xpProgress.style.width = `${(xp / xpToNext) * 100}%`;
-}
+    function createFloatingScore(x, y) {
+        const floatingScore = document.createElement('div');
+        floatingScore.id = 'floating-score';
+        floatingScore.style.left = `${x}px`;
+        floatingScore.style.top = `${y}px`;
+        floatingScore.textContent = '+1';
+        document.body.appendChild(floatingScore);
+        setTimeout(() => {
+            floatingScore.remove();
+        }, 1000);
+    }
 
-fightBtn.addEventListener("mousedown", (e) => {
-    e.preventDefault();
-});
-
-fightBtn.addEventListener("click", () => {
-    if (energy > 0) {
-        balance += profit;
-        energy -= 1;
-        xp += xpPerFight;
-
-        if (xp >= xpToNext) {
-            xp = xp - xpToNext;
-            level++;
-            xpToNext = level * 100;
+    hamster.addEventListener('click', (event) => {
+        if (currentEnergy > 0) {
+            score++;
+            currentEnergy--;
+            scoreElement.textContent = formatNumber(score);
+            updateEnergyDisplay();
+            createFloatingScore(event.clientX, event.clientY);
+            localStorage.setItem('score', score); // Сохранение очков в Local Storage
         }
+    });
 
-        localStorage.setItem("balance", balance);
-        localStorage.setItem("energy", energy);
-        localStorage.setItem("xp", xp);
-        localStorage.setItem("level", level);
-        localStorage.setItem("lastEnergyUpdate", Date.now());
+    setInterval(() => {
+        if (currentEnergy < totalEnergy) {
+            currentEnergy++;
+            updateEnergyDisplay();
+        }
+    }, 5000);
 
-        updateUI();
+    setInterval(() => {
+        score += 2000;
+        scoreElement.textContent = formatNumber(score);
+        localStorage.setItem('score', score); // Сохранение очков в Local Storage
+    }, 60000);
 
-        Telegram.WebApp.sendData(
-            JSON.stringify({
-                action: "fight",
-                balance,
-                energy,
-                xp,
-                level
-            })
-        );
-    } else {
-        alert("⚡ Not enough energy!");
+    function startTimer(timerElement, initialTimeInSeconds, callback) {
+        let time = initialTimeInSeconds;
+        const interval = setInterval(() => {
+            if (time > 0) {
+                time--;
+                const minutes = Math.floor(time / 60);
+                const seconds = time % 60;
+                timerElement.textContent = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            } else {
+                callback();
+                clearInterval(interval);
+                startTimer(timerElement, initialTimeInSeconds, callback);
+            }
+        }, 1000);
     }
+
+    function rewardCallback() {
+        const randomPoints = Math.floor(Math.random() * 10001) + 5000;
+        score += randomPoints;
+        scoreElement.textContent = formatNumber(score);
+        localStorage.setItem('score', score); // Сохранение очков в Local Storage
+    }
+
+    startTimer(dailyRewardTimerElement, 750, rewardCallback); // 12:30 in seconds
+    startTimer(dailyCodeTimerElement, 450, rewardCallback); // 07:30 in seconds
+    startTimer(comboTimerElement, 30, rewardCallback); // 00:30 in seconds
 });
-
-// Восстановление энергии в реальном времени
-setInterval(() => {
-    if (energy < 10) {
-        energy += 1;
-        localStorage.setItem("energy", energy);
-        localStorage.setItem("lastEnergyUpdate", Date.now());
-        updateUI();
-    }
-}, 5000);
-
-updateUI();
