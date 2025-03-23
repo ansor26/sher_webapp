@@ -1,6 +1,3 @@
-Telegram.WebApp.ready();
-Telegram.WebApp.expand();
-
 document.addEventListener('DOMContentLoaded', () => {
     const hamster = document.getElementById('hamster');
     const scoreElement = document.getElementById('score');
@@ -9,6 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const dailyCodeTimerElement = document.getElementById('daily-code-timer');
     const comboTimerElement = document.getElementById('combo-timer');
 
+    Telegram.WebApp.ready();
+    Telegram.WebApp.expand();
+    
     // Получение сохраненного значения очков из Local Storage
     let score = parseInt(localStorage.getItem('score')) || 194912344; // Установка начального значения очков
     let currentEnergy = 3000;
