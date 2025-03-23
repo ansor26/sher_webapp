@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Раскрытие Telegram Mini App на полный экран
+    if (window.Telegram.WebApp) {
+        Telegram.WebApp.expand();
+    }
+
     const hamster = document.getElementById('hamster');
     const scoreElement = document.getElementById('score');
     const energyElement = document.getElementById('energy');
@@ -6,17 +11,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const dailyCodeTimerElement = document.getElementById('daily-code-timer');
     const comboTimerElement = document.getElementById('combo-timer');
 
-    // Получение сохраненного значения очков из Local Storage
-    let score = parseInt(localStorage.getItem('score')) || 194912344; // Установка начального значения очков
+    let score = parseInt(localStorage.getItem('score')) || 194912344;
     let currentEnergy = 3000;
     const totalEnergy = 3000;
 
-    // Функция форматирования числа с пробелами
     function formatNumber(num) {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
     }
 
-    // Обновление отображения начального значения очков
     scoreElement.textContent = formatNumber(score);
 
     function updateEnergyDisplay() {
@@ -42,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
             scoreElement.textContent = formatNumber(score);
             updateEnergyDisplay();
             createFloatingScore(event.clientX, event.clientY);
-            localStorage.setItem('score', score); // Сохранение очков в Local Storage
+            localStorage.setItem('score', score);
         }
     });
 
@@ -56,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(() => {
         score += 2000;
         scoreElement.textContent = formatNumber(score);
-        localStorage.setItem('score', score); // Сохранение очков в Local Storage
+        localStorage.setItem('score', score);
     }, 60000);
 
     function startTimer(timerElement, initialTimeInSeconds, callback) {
@@ -79,10 +81,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const randomPoints = Math.floor(Math.random() * 10001) + 5000;
         score += randomPoints;
         scoreElement.textContent = formatNumber(score);
-        localStorage.setItem('score', score); // Сохранение очков в Local Storage
+        localStorage.setItem('score', score);
     }
 
-    startTimer(dailyRewardTimerElement, 750, rewardCallback); // 12:30 in seconds
-    startTimer(dailyCodeTimerElement, 450, rewardCallback); // 07:30 in seconds
-    startTimer(comboTimerElement, 30, rewardCallback); // 00:30 in seconds
+    startTimer(dailyRewardTimerElement, 750, rewardCallback);
+    startTimer(dailyCodeTimerElement, 450, rewardCallback);
+    startTimer(comboTimerElement, 30, rewardCallback);
 });
