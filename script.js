@@ -1,3 +1,6 @@
+Telegram.WebApp.ready();
+Telegram.WebApp.expand();
+
 document.addEventListener('DOMContentLoaded', () => {
     const hamster = document.getElementById('hamster');
     const scoreElement = document.getElementById('score');
