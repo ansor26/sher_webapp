@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     Telegram.WebApp.expand();
-    
     const hamster = document.getElementById('hamster');
     const scoreElement = document.getElementById('score');
     const energyElement = document.getElementById('energy');
