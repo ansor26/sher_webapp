@@ -11,6 +11,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const dailyCodeTimerElement = document.getElementById('daily-code-timer');
     const comboTimerElement = document.getElementById('combo-timer');
 
+    // 🎵 Добавляем звук
+    const clickSound = new Audio('coin.mp3');
+    clickSound.volume = 0.5;
+
     let score = parseInt(localStorage.getItem('score')) || 194912344;
     let currentEnergy = 3000;
     const totalEnergy = 3000;
@@ -45,6 +49,10 @@ document.addEventListener('DOMContentLoaded', () => {
             updateEnergyDisplay();
             createFloatingScore(event.clientX, event.clientY);
             localStorage.setItem('score', score);
+
+            // ▶️ Проигрывание звука
+            clickSound.currentTime = 0;
+            clickSound.play();
         }
     });
 
