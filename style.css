@@ -1,34 +1,50 @@
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    touch-action: none;
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #111;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
 .container {
-    text-align: center;
-    padding: 20px;
+  text-align: center;
+  padding: 20px;
 }
 
-#hamster {
-    width: 120px;
-    cursor: pointer;
+.stats p {
+  margin: 10px 0;
 }
 
-.score-board {
-    font-size: 25px;
-    font-weight: bold;
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+#fightBtn {
+  background-color: yellow;
+  color: #111;
+  padding: 12px 24px;
+  font-size: 18px;
+  border: none;
+  border-radius: 12px;
+  margin: 20px 0;
+  cursor: pointer;
 }
 
-.coin-icon {
-    width: 24px;
-    height: 24px;
-    margin-right: 8px;
+#fightBtn:focus {
+  outline: none;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.menu-btn {
+  background-color: #333;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
 }
