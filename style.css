@@ -1,11 +1,10 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    html, body {
     height: 100vh;
     margin: 0;
+    padding: 0;
+    overflow: hidden; /* отключаем прокрутку */
+    touch-action: manipulation; /* убирает сдвиг при тапах */
 }
 
 .container {
