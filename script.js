@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Разворачиваем Mini App на весь экран
-Telegram.WebApp.ready();
-Telegram.WebApp.expand();
+    if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
+        Telegram.WebApp.ready();   // Обязательная инициализация
+        Telegram.WebApp.expand();  // Попытка открыть на весь экран
     }
 
     const hamster = document.getElementById('hamster');
