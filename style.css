@@ -1,14 +1,11 @@
 body {
-     text-align: center;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 0; /* убираем скругления */
-    box-shadow: none; /* убираем тень */
-    width: 100vw;      /* растягиваем на всю ширину */
-    height: 100vh;     /* растягиваем на всю высоту */
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
     touch-action: manipulation;
 }
 
