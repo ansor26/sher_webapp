@@ -13,9 +13,14 @@ body {
     text-align: center;
     background-color: #fff;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    border-radius: 0; /* убираем скругления */
+    box-shadow: none; /* убираем тень */
+    width: 100vw; /* на всю ширину экрана */
+    height: 100vh; /* на всю высоту экрана */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden; /* отключаем прокрутку */
 }
 
 .header {
